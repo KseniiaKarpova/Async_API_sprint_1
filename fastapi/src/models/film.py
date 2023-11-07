@@ -4,13 +4,14 @@ from typing import List, Union
 import orjson
 from models import orjson_dumps
 from models.person import Person
+from models.genre import Genre
 from pydantic import BaseModel
 
 
 class Film(BaseModel):
     id: uuid.UUID
     imdb_rating: Union[float, None] = None
-    genre: List
+    genre: List[Genre]
     title: str
     description: str
     director: str
