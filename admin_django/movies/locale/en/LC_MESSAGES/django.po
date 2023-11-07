@@ -1,0 +1,59 @@
+#: movies/apps.py:8
+msgid "movies"
+msgstr "Фильмы"
+
+#: movies/models.py:9
+msgid "created"
+msgstr "Дата добавления"
+
+#: movies/models.py:10
+msgid "modified"
+msgstr "Дата изменения"
+
+#: movies/models.py:27 movies/models.py:47
+msgid "name"
+msgstr "Название"
+
+#: movies/models.py:29 movies/models.py:48
+msgid "description"
+msgstr "Описание"
+
+#: movies/models.py:44
+msgid "Фильм"
+msgstr "film"
+
+#: movies/models.py:45
+msgid "TV_шоу"
+msgstr "tv_show"
+
+#: movies/models.py:49
+msgid "creation_date"
+msgstr "Дата создания"
+
+#: movies/models.py:51
+msgid "type"
+msgstr "Тип"
+
+#: movies/models.py:54
+msgid "rating"
+msgstr "Рейтинг"
+
+#: movies/models.py:81
+msgid "full_name"
+msgstr "ФИО"
+
+#: movies/models.py:96
+msgid "режисер"
+msgstr ""
+
+#: movies/models.py:97
+msgid "сценарист"
+msgstr ""
+
+#: movies/models.py:98
+msgid "актер"
+msgstr ""
+
+#: movies/models.py:103
+msgid "role"
+msgstr "роль"
