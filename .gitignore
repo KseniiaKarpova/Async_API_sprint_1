@@ -4,3 +4,4 @@
 out
 # Environments
 .env
+venv/
