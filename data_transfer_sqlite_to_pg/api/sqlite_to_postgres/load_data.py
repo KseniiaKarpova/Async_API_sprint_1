@@ -72,6 +72,18 @@ def load_from_sqlite(connection: sqlite3.Connection,
         logger.exception(e)
 
 
+def rename_column(conn: sqlite3.Connection,
+                  table: str,
+                  from_name: str,
+                  to_name: str):
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f'ALTER TABLE {table} RENAME COLUMN {from_name} TO {to_name}')
+        cursor.close()
+    except Exception as e:
+        logger.exception(e)
+
+
 def run():
     # Данные для подключения к БД
     db_path = 'api/sqlite_to_postgres/db.sqlite'
@@ -89,6 +101,16 @@ def run():
     try:
         with (conn_context(db_path) as sqlite_conn,
               conn_context_pg(dsn) as pg_conn):
+
+            rename_column(sqlite_conn, 'person', 'created_at', 'created')
+            rename_column(sqlite_conn, 'person', 'updated_at', 'modified')
+            rename_column(sqlite_conn, 'genre_film_work', 'created_at', 'created')
+            rename_column(sqlite_conn, 'person_film_work', 'created_at', 'created')
+            rename_column(sqlite_conn, 'film_work', 'created_at', 'created')
+            rename_column(sqlite_conn, 'film_work', 'updated_at', 'modified')
+            rename_column(sqlite_conn, 'genre', 'created_at', 'created')
+            rename_column(sqlite_conn, 'genre', 'updated_at', 'modified')
+
             load_from_sqlite(sqlite_conn, pg_conn)
 
     except Exception as e:
