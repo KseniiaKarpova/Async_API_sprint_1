@@ -9,6 +9,8 @@ class FilmWork:
     description: str
     creation_date: str
     type: str
+    created: str
+    modified: str
     rating: float = field(default=0.0)
 
 
@@ -17,12 +19,16 @@ class Genre:
     id: uuid.uuid4
     name: str
     description: str
+    created: str
+    modified: str
 
 
 @dataclass(frozen=True)
 class Person:
     id: uuid.uuid4
     full_name: str
+    created: str
+    modified: str
 
 
 @dataclass(frozen=True)
@@ -30,6 +36,7 @@ class Genre_film_work:
     id: uuid.uuid4
     film_work_id: uuid.uuid4
     genre_id: uuid.uuid4
+    created: str
 
 
 @dataclass(frozen=True)
@@ -38,6 +45,7 @@ class Person_film_work:
     film_work_id: uuid.uuid4
     person_id: uuid.uuid4
     role: str
+    created: str
 
 
 tables = {"genre": {'type': Genre,
