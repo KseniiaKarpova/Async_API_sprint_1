@@ -11,16 +11,13 @@ from pydantic import BaseModel
 class Film(BaseModel):
     id: uuid.UUID
     imdb_rating: Union[float, None] = None
-    genre: List[Genre]
-    title: str
-    description: str
-    director: str
-    actors_names: str
-    writers_names: str
-    actors: List[Person]
-    writers: List[Person]
+    genre: List[Genre | None]
+    title: str | None
+    description: str | None
+    director: List[Person | None]
+    actors: List[Person | None]
+    writers: List[Person | None]
 
     class Config:
-        # Заменяем стандартную работу с json на более быструю
         json_loads = orjson.loads
         json_dumps = orjson_dumps
