@@ -1,5 +1,5 @@
 from typing import Any
-from sqlalchemy import select, func, case, or_
+from sqlalchemy import select, func, case
 from db.schemas import FilmWork, Person, Genre, GenreFilmwork, PersonFilmWork
 from abc import abstractmethod
 
@@ -33,10 +33,7 @@ class PersonRepository(BaseRepository):
                 Person.full_name.label('name'),
                 Person.modified,
             ).where(
-                or_(
-                    Person.modified>updated_at,
-                    Person.modified.is_(None)
-                    )
+                Person.modified>updated_at
                 ).order_by(Person.modified).limit(limit).offset(offset)
 
     @staticmethod
@@ -140,10 +137,7 @@ class FilmWorkRepository(BaseRepository):
                                 writers_subquery, FilmWork.id == writers_subquery.c.id).outerjoin(
                                     writers_names_subquery, FilmWork.id == writers_names_subquery.c.id
                             ).where(
-                                or_(
-                                    FilmWork.modified>updated_at,
-                                    FilmWork.modified.is_(None)
-                                    )
+                                FilmWork.modified>updated_at
                                 ).order_by(FilmWork.modified).limit(limit).offset(offset)
         return query
 
@@ -159,8 +153,5 @@ class GenreRepository(BaseRepository):
                 Genre.description,
                 Genre.modified,
             ).where(
-                or_(
-                    Genre.modified>updated_at,
-                    Genre.modified.is_(None),
-                    )
+                Genre.modified>updated_at
                 ).order_by(Genre.modified).limit(limit).offset(offset)
