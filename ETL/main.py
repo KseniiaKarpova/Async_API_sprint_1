@@ -45,12 +45,11 @@ def fetch_changed_objects(next_node: Generator, session) -> Generator[None, date
                 query = repository.last_updateds(limit=records_per_page, offset=offset, updated_at=last_updated)
                 result = session.execute(query)
                 objects = result.mappings().all()
-                print(objects, '#####################')
                 ## break the loop if there is no data
                 if not result or not objects:
                     break
                 data['objects'] = objects
-                data['updated_at'] = str(objects[-1]['updated_at'])
+                data['updated_at'] = str(objects[-1]['modified'])
                 offset += records_per_page
                 next_node.send(data)
 
