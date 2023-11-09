@@ -11,7 +11,7 @@ class Index:
     __client__ = Elasticsearch([URL])
 
     @classmethod
-    def put_data(cls, data):
+    def put_data(cls, data: list):
         client, index, body = cls.__client__, cls.name(), cls.settings()
         client.indices.create(index=index, body=body, ignore=400)
         for document in data:
@@ -25,16 +25,16 @@ class Index:
         index_settings = cls.__settings__
         index_settings.update({'mappings': cls.__mappings__})
         return index_settings
-    
+
     @classmethod
     def name(cls):
         return cls.__index_name__
-    
+
     @classmethod
     def create_index(cls):
         client, index, body = cls.__client__, cls.name(), cls.settings()
         client.indices.create(index=index, body=body, ignore=400)
-    
+
     @classmethod
     def remove_not_mapped_fields(cls, data: dict):
         data_keys = data.copy()
@@ -46,6 +46,7 @@ class Index:
             raise TypeError
 
         return data
+
 
 class MoviesIndex(Index):
     __index_name__ = 'movies'
