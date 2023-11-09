@@ -17,7 +17,7 @@ class BaseRepository:
                 select(cls.table).where(getattr(cls.table, attribute) == value).offset(offset=offset)
             )).scalars()
         return instances
-    
+
     @abstractmethod
     def last_updateds(limit, offset, updated_at):
         ...

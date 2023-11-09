@@ -92,7 +92,7 @@ def main():
     fetcher_coro: Generator = fetch_changed_objects(next_node=movies_saver_coro)
     while True:
         for data in repo_ind:
-            data['last_updated'] = state.get_state(STATE_KEY.format(index=data['index'])) or datetime.min
+            data['last_updated'] = state.get_state(STATE_KEY.format(index=data['index'])) or str(datetime.min)
             fetcher_coro.send(data)
             print(data)
         sleep(15)
