@@ -7,7 +7,7 @@ from redis.asyncio import Redis
 
 from db.elastic import get_elastic
 from db.redis import get_redis
-from cache import RedisCache
+from services.cache import RedisCache
 
 class FilmStorage:
     def __init__(self, elastic: AsyncElasticsearch):

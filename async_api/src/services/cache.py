@@ -1,7 +1,7 @@
 import json
 from typing import Any, Optional
 
-from db.redis_db import Redis
+from redis.asyncio import Redis
 
 
 class RedisCache:

@@ -61,6 +61,7 @@ services:
 
   nginx:
     image: nginx:1.19.2
+    container_name: nginx
     volumes:
       - ./admin_nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./admin_nginx/site.conf:/etc/nginx/conf.d/default.conf:ro
@@ -72,6 +73,17 @@ services:
     ports:
       - "80:80"
       - "8000:80"
+
+  cache:
+    image: redis:7.2.3-alpine3.18
+    container_name: cache
+    restart: always
+    ports:
+      - '6379:6379'
+    env_file:
+      - .env
+    volumes:
+      - cache:/data
 
 volumes:
   pg_data:
