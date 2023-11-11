@@ -2,18 +2,16 @@ version: '3.9'
 
 services:
   postgres:
-    image: postgres:13
+    build:
+      context: ./postgres
+      dockerfile: dockerfile
     container_name: postgres
-    volumes:
-      - pg_data:/var/lib/postgresql/data/
-      - ./postgres:/docker-entrypoint-initdb.d
     env_file:
       - .env
     environment:
       - POSTGRES_PASSWORD=${PG_PASSWORD}
       - POSTGRES_USER=${PG_USER}
       - POSTGRES_DB=${PG_NAME}
-    restart: always
 
 
   elasticsearch:
@@ -39,8 +37,6 @@ services:
       - "8888:8888"
     env_file:
       - .env
-    restart: always
-
 
   app:
     build:
@@ -72,9 +68,40 @@ services:
     ports:
       - "80:80"
       - "8000:80"
+  
+  redis:
+    image: redis:rc-alpine3.12
+    restart: on-failure
+    ports:
+      - 16379:6379
+
+  etl:
+    build:
+      context: ETL
+      dockerfile: dockerfile
+    command: python3 main.py
+    depends_on:
+      - postgres
+      - elasticsearch
+      - redis
+    env_file:
+      - .env
+    environment:
+      PYTHONPATH: /src
+      DB_NAME: ${PG_NAME}
+      DB_USER: ${PG_USER}
+      DB_PASSWORD: ${PG_PASSWORD}
+      DB_HOST: ${PG_HOST}
+      DB_PORT: ${PG_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_DB: ${REDIS_DB}
+      ES_HOST: ${ES_HOST}
+      ES_PORT: ${ES_PORT}
 
 volumes:
   pg_data:
   es_data:
   static_volume:
   media_volume:
+
