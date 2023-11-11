@@ -7,7 +7,7 @@ from redis.asyncio import Redis
 
 from db.elastic import get_elastic
 from db.redis import get_redis
-
+from cache import RedisCache
 
 class FilmStorage:
     def __init__(self, elastic: AsyncElasticsearch):
@@ -70,7 +70,7 @@ class FilmStorage:
 
 
 class FilmService:
-    def __init__(self, cache: BaseCache, storage: FilmStorage):
+    def __init__(self, cache: RedisCache, storage: FilmStorage):
         self.cache = cache
         self.storage = storage
 
@@ -79,12 +79,11 @@ class FilmService:
         return data
 
     async def get_data_by_id(self, url: str, id: str) -> Optional[Dict]:
-        data = await self.cache.get_object_from_cache(url)
+        data = await self.cache.get_from_cache(url)
         if not data:
             data = await self.storage.get_data_by_id(id=id)
             if data:
-                await self.cache.put_object_to_cache(url, data)
-
+                await self.cache.put_to_cache(url, data)
         return data
 
     async def get_data_list(
