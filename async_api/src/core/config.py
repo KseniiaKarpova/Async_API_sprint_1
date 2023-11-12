@@ -1,4 +1,5 @@
 import os
+
 from logging import config as logging_config
 from fastapi import Query
 from core.logger import LOGGING
