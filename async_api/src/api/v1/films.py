@@ -69,7 +69,7 @@ async def search_films(
     summary="Film",
     description="Getting film by id",
 )
-async def film_details(
+async def get_film_details(
     request: Request, film_id: UUID, film_service: FilmService = Depends(get_film_service)
 ) -> FilmDetail:
     film = await film_service.get_data_by_id(url=str(request.url), id=str(film_id))
@@ -82,6 +82,8 @@ async def film_details(
         description=film["description"],
         genre=film["genre"],
         actors=film["actors"],
+        actors_names=film["actors_names"],
         writers=film["writers"],
+        writers_names=film["writers_names"],
         director=film["director"],
     )
