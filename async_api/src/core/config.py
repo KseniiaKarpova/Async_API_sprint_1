@@ -1,6 +1,7 @@
 import os
-from logging import config as logging_config
 
+from logging import config as logging_config
+from fastapi import Query
 from core.logger import LOGGING
 
 # Применяем настройки логирования
@@ -19,3 +20,13 @@ ELASTIC_PORT = int(os.getenv('ELASTIC_PORT', 9200))
 
 # Корень проекта
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+class QueryParams:
+    def __init__(
+        self,
+        page_number: int | None = Query(default=1, ge=1),
+        page_size: int | None = Query(default=10, ge=1, le=50),
+    ):
+        self.page_number = page_number
+        self.page_size = page_size

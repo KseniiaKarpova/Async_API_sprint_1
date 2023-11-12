@@ -161,3 +161,4 @@ media/
 *.shellcheckrc
 *.trunk/
 *.vscode/
+__pycache__
