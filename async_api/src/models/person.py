@@ -1,4 +1,5 @@
 import uuid
+from typing import List
 
 import orjson
 from models import orjson_dumps
@@ -13,3 +14,7 @@ class Person(BaseModel):
         # Заменяем стандартную работу с json на более быструю
         json_loads = orjson.loads
         json_dumps = orjson_dumps
+
+
+class PersonDetails(Person):
+    films: List
