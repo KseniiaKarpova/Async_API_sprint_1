@@ -28,13 +28,28 @@ class PersonRepository(BaseRepository):
 
     @staticmethod
     def last_updateds(limit, offset, updated_at):
+        subquery = (
+            select(
+                Person.id,
+                Person.modified,
+                FilmWork.id.label('film_id'),
+                func.array_agg(PersonFilmWork.role).label('roles')
+            )
+            .outerjoin(PersonFilmWork, Person.id == PersonFilmWork.person_id)
+            .join(FilmWork, PersonFilmWork.film_work_id == FilmWork.id)
+            .group_by(Person.id, Person.modified, FilmWork.id)
+            .alias()
+        )
         return select(
                 Person.id,
                 Person.full_name.label('name'),
                 Person.modified,
-            ).where(
+                func.jsonb_agg(
+                    func.jsonb_build_object('id', subquery.c.film_id, 'roles', subquery.c.roles)
+                ).label('films')
+            ).outerjoin(Person, Person.id == subquery.c.id).where(
                 Person.modified>updated_at
-                ).order_by(Person.modified).limit(limit).offset(offset)
+                ).group_by(Person.id, subquery.c.id).order_by(Person.modified).limit(limit).offset(offset)
 
     @staticmethod
     def film_persons_name_subquery(role, label):

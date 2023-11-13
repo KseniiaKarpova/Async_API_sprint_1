@@ -80,6 +80,19 @@ persons_mappings = {
           }
         }
       },
+      "films": {
+        "type": "nested",
+        "dynamic": "strict",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "roles": {
+            "type": "text",
+            "analyzer": "ru_en"
+          },
+        }
+      },
     }
   }
 
