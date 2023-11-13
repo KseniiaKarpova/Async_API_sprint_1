@@ -1,13 +1,15 @@
 from functools import lru_cache
 from typing import Dict, List, Optional
 from uuid import UUID
-from elasticsearch import AsyncElasticsearch, NotFoundError
-from fastapi import Depends
-from redis.asyncio import Redis
 
 from db.elastic import get_elastic
 from db.redis import get_redis
+from elasticsearch import AsyncElasticsearch, NotFoundError
+from redis.asyncio import Redis
 from services.cache import RedisCache
+
+from fastapi import Depends
+
 
 class FilmStorage:
     def __init__(self, elastic: AsyncElasticsearch):
@@ -32,7 +34,6 @@ class FilmStorage:
     async def get_data_by_id(self, id: UUID) -> Optional[Dict]:
         try:
             doc = await self.elastic.get(index="movies", id=id)
-            print(doc)
         except NotFoundError:
             return None
         return doc["_source"]

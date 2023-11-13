@@ -6,6 +6,7 @@ from redis.asyncio import Redis
 
 class RedisCache:
     CACHE_EXPIRE_IN_SECONDS = 300
+
     def __init__(self, redis: Redis, expire: int = None):
         self.redis = redis
         self.expire = expire or RedisCache.CACHE_EXPIRE_IN_SECONDS
