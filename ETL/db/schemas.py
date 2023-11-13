@@ -1,10 +1,10 @@
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from db.config import Base
-
-from uuid import UUID, uuid4
-from datetime import datetime, date
-from sqlalchemy import ForeignKey
+from datetime import date, datetime
 from typing import List
+from uuid import UUID, uuid4
+
+from db.config import Base
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 class BaseModel(Base):

@@ -1,7 +1,7 @@
-from elasticsearch.client import Elasticsearch
 from elastic.config import URL
-from elastic.mappings import movies_mappings, persons_mappings, genres_mappings
 from elastic.index_settings import settings
+from elastic.mappings import genres_mappings, movies_mappings, persons_mappings
+from elasticsearch.client import Elasticsearch
 
 
 class Index:

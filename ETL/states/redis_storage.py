@@ -1,8 +1,8 @@
-from states.base_storage import BaseStorage
-from redis import Redis
 import os
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
+from redis import Redis
+from states.base_storage import BaseStorage
 
 load_dotenv()
 host = os.environ.get('REDIS_HOST')

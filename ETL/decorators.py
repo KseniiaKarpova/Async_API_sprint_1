@@ -1,9 +1,10 @@
-from functools import wraps
-from contextlib import contextmanager
-from db.config import engine
-from sqlalchemy.orm import sessionmaker
 import logging as logger
 import time
+from contextlib import contextmanager
+from functools import wraps
+
+from db.config import engine
+from sqlalchemy.orm import sessionmaker
 
 
 def backoff(start_sleep_time=0.1, factor=2, border_sleep_time=20):

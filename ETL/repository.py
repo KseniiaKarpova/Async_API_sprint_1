@@ -1,7 +1,8 @@
-from typing import Any
-from sqlalchemy import select, func, case
-from db.schemas import FilmWork, Person, Genre, GenreFilmwork, PersonFilmWork
 from abc import abstractmethod
+from typing import Any
+
+from db.schemas import FilmWork, Genre, GenreFilmwork, Person, PersonFilmWork
+from sqlalchemy import case, func, select
 
 
 class BaseRepository:
