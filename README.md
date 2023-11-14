@@ -25,11 +25,11 @@ curl -XGET http://127.0.0.1/api/v1/movies/
 
 ### 5 step
 Swagger для FastApi: 
-[http://0.0.0.0:7000/api/openapi](http://0.0.0.0:7000/api/openapi)
+[http://127.0.0.1:8080/api/openapi](http://127.0.0.1:8080/api/openapi)
 
 Пример:
 ```bash
 curl -X 'GET' \
-  'http://0.0.0.0:7000/api/v1/persons/6dd77305-18ee-4d2e-9215-fd1a496ccfdf/film' \
+  'http://127.0.0.1:8080/api/v1/persons/6dd77305-18ee-4d2e-9215-fd1a496ccfdf/film' \
   -H 'accept: application/json'
 ```
