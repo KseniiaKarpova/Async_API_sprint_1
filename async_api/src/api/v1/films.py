@@ -43,7 +43,7 @@ async def get_film_list(
     "/search",
     response_model=List[Film],
     response_description="Example of films",
-    response_model_exclude={"description", "genre", "actors", "writers", "director"},
+    response_model_exclude={"description", "genre", "actors", "writers", "director", "actors_names", "writers_names"},
     description="Film searching",
     summary="List of films",
 )
@@ -68,6 +68,7 @@ async def search_films(
 @router.get(
     "/{film_id}",
     response_model=FilmDetail,
+    response_model_exclude={"actors_names", "writers_names"},
     response_description="Example of film",
     summary="Film",
     description="Getting film by id",
@@ -84,9 +85,7 @@ async def get_film_details(
         imdb_rating=film["imdb_rating"],
         description=film["description"],
         genre=film["genre"],
-        actors=film["actors"],
-        actors_names=film["actors_names"],
-        writers=film["writers"],
-        writers_names=film["writers_names"],
+        actors=film["actors_names"],
+        writers=film["writers_names"],
         director=film["director"],
     )

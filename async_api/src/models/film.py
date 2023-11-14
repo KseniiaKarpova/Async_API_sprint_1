@@ -27,7 +27,5 @@ class FilmDetail(BaseModelOrjson):
     title: str
     description: str | None
     director: List | None
-    actors_names:  Optional[List] = None
-    writers_names: Optional[List] = None
-    actors: List[Person]
-    writers: List[Person]
+    actors: Optional[List] = None
+    writers: Optional[List] = None
