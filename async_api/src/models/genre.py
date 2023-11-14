@@ -8,7 +8,7 @@ from pydantic import BaseModel
 class Genre(BaseModel):
     id: uuid.UUID
     name: str
-    description: str
+    description: str | None
 
     class Config:
         # Заменяем стандартную работу с json на более быструю

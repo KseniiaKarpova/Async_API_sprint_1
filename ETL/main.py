@@ -1,13 +1,14 @@
-from decorators import create_session, coroutine, backoff
-from time import sleep
 import logging as logger
-from repository import FilmWorkRepository, GenreRepository, PersonRepository, BaseRepository
-from elastic.indexes import MoviesIndex, GenresIndex, PersonsIndex, Index
-from typing import Generator
 from datetime import datetime
-from states.state import State
-from states.redis_storage import RedisStorage
+from time import sleep
+from typing import Generator
 
+from decorators import backoff, coroutine, create_session
+from elastic.indexes import GenresIndex, Index, MoviesIndex, PersonsIndex
+from repository import (BaseRepository, FilmWorkRepository, GenreRepository,
+                        PersonRepository)
+from states.redis_storage import RedisStorage
+from states.state import State
 
 STATE_KEY = 'last_{index}_updated'
 

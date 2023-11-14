@@ -1,11 +1,12 @@
 from http import HTTPStatus
 from typing import Dict, List, Optional
 from uuid import UUID
-from fastapi import APIRouter, Depends, HTTPException, Request
-from models.film import Film, FilmDetail
-from core.config import QueryParams
 
+from core.config import QueryParams
+from models.film import Film, FilmDetail
 from services.film import FilmService, get_film_service
+
+from fastapi import APIRouter, Depends, HTTPException, Request
 
 router = APIRouter()
 
@@ -37,6 +38,7 @@ async def get_film_list(
         for film in films
     ]
 
+
 @router.get(
     "/search",
     response_model=List[Film],
@@ -61,6 +63,7 @@ async def search_films(
         )
         for film in films
     ]
+
 
 @router.get(
     "/{film_id}",

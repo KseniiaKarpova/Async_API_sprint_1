@@ -1,10 +1,9 @@
 import uuid
-from typing import List, Union, Optional, Dict
+from typing import List, Optional, Union
 
 import orjson
 from models import orjson_dumps
 from models.person import Person
-from models.genre import Genre
 from pydantic import BaseModel
 
 
