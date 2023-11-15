@@ -1,17 +1,10 @@
 import uuid
-from typing import Union
-
-import orjson
-from models import orjson_dumps
-from pydantic import BaseModel
+from typing import List, Optional, Union
+from models.base import Base0rjsonModel
 
 
-class BaseModelOrjson(BaseModel):
+class BaseModelOrjson(Base0rjsonModel):
     id: uuid.UUID
-
-    class Config:
-        json_loads = orjson.loads
-        json_dumps = orjson_dumps
 
 
 class Film(BaseModelOrjson):
