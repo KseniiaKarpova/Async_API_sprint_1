@@ -15,9 +15,9 @@ class Film(BaseModelOrjson):
 class FilmDetail(BaseModelOrjson):
     title: str
     imdb_rating: Union[float, None] = None
-    genre: List
+    genre: list
     title: str
     description: str | None
     director: list | None
-    actors: Optional[List] = None
-    writers: Optional[List] = None
+    actors: list = None
+    writers: list = None

@@ -1,5 +1,4 @@
 from functools import lru_cache
-from typing import Dict, List, Optional
 from uuid import UUID
 
 from db.elastic import get_elastic
@@ -15,7 +14,7 @@ class PersonStorage:
     def __init__(self, elastic: AsyncElasticsearch):
         self.elastic = elastic
 
-    async def get_data_by_id(self, id: UUID) -> Optional[Dict]:
+    async def get_data_by_id(self, id: UUID) -> dict:
         try:
             doc = await self.elastic.get(index="persons", id=id)
         except NotFoundError:
@@ -82,7 +81,7 @@ class PersonService:
                 await self.cache.put_to_cache(url, data)
         return data
 
-    async def get_data_by_id(self, url: str, id: UUID) -> Optional[Dict]:
+    async def get_data_by_id(self, url: str, id: UUID) -> dict:
         data = await self.cache.get_from_cache(url)
         if not data:
             data = await self.storage.get_data_by_id(id=id)
@@ -90,7 +89,7 @@ class PersonService:
                 await self.cache.put_to_cache(url, data)
         return data
 
-    async def get_film(self, url: str, id: UUID) -> Optional[List[Dict]]:
+    async def get_film(self, url: str, id: UUID) -> list[dict]:
         data = await self.cache.get_from_cache(url)
         if not data:
             data = await self.storage.get_film(id=id)

@@ -1,13 +1,12 @@
 import json
 from logging import Logger
-from typing import Optional
 
 from states.base_storage import BaseStorage
 
 
 class JsonFileStorage(BaseStorage):
     def __init__(
-        self, logger: Logger, file_path: Optional[str] = 'storage.json'
+        self, logger: Logger, file_path: str = 'storage.json'
     ):
         self.file_path = file_path
         self._logger = logger
