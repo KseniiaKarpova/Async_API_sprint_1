@@ -1,9 +1,8 @@
 import uuid
-from typing import List, Optional, Union
+from typing import Union
 
 import orjson
 from models import orjson_dumps
-from models.person import Person
 from pydantic import BaseModel
 
 
@@ -23,9 +22,9 @@ class Film(BaseModelOrjson):
 class FilmDetail(BaseModelOrjson):
     title: str
     imdb_rating: Union[float, None] = None
-    genre: List
+    genre: list
     title: str
     description: str | None
-    director: List | None
-    actors: Optional[List] = None
-    writers: Optional[List] = None
+    director: list | None
+    actors: list = None
+    writers: list = None

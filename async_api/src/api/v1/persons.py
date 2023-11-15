@@ -1,5 +1,4 @@
 from http import HTTPStatus
-from typing import Dict, List, Optional
 from uuid import UUID
 
 from core.config import QueryParams
@@ -24,7 +23,7 @@ async def search_person(
     service: PersonService = Depends(get_person_service),
     query: str = "",
     commons: QueryParams = Depends(QueryParams),
-) -> Optional[List[Dict[str, Person]]]:
+) -> list[dict[str, Person]]:
     persons = await service.search_data(url=str(request.url),
                                         query=query,
                                         page_number=commons.page_number,
@@ -54,7 +53,7 @@ async def get_person_by_id(
 
 @router.get(
     "/{uuid}/film",
-    response_model=List[Film],
+    response_model=list[Film],
     response_description="Example of person",
     summary="Person",
     description="Getting person by uuid",
@@ -63,15 +62,8 @@ async def get_films_by_person(
     request: Request,
     uuid: UUID,
     service: PersonService = Depends(get_person_service)
-) -> Optional[List[Dict[str, Film]]]:
+) -> list[dict[str, Film]]:
     films = await service.get_film(url=str(request.url), id=str(uuid))
     if not films:
         raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Films Not Found")
-    return [
-        Film(
-            id=film["id"],
-            title=film["title"],
-            imdb_rating=film["imdb_rating"],
-        )
-        for film in films
-    ]
+    return films
