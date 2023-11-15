@@ -22,10 +22,10 @@ class Film(BaseModelOrjson):
 
 class FilmDetail(BaseModelOrjson):
     title: str
-    imdb_rating: Union[float, None] = None
-    genre: List
+    imdb_rating: float = None
+    genre: list
     title: str
-    description: str | None
-    director: List | None
-    actors: Optional[List] = None
-    writers: Optional[List] = None
+    description: str = None
+    director: list = None
+    actors: list = None
+    writers: list = None
