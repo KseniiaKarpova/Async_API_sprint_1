@@ -76,8 +76,6 @@ services:
     image: redis:7.2.3-alpine3.18
     container_name: cache
     restart: always
-    ports:
-      - '6379:6379'
     env_file:
       - .env
     volumes:
@@ -111,11 +109,16 @@ services:
 
   async_api:
     container_name: fastapi
+    command: gunicorn main:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:7000
+    environment:
+      PYTHONPATH: /app/src
     build:
       context: async_api
       dockerfile: Dockerfile
     ports:
-      - 7000:7000
+      - 9999:7000
+    volumes:
+      - ./async_api/src:/app
     depends_on:
       - etl
       - cache
