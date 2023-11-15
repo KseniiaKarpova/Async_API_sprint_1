@@ -115,7 +115,7 @@ services:
       context: async_api
       dockerfile: Dockerfile
     ports:
-      - 7000:7000
+      - 9999:7000
     depends_on:
       - etl
       - cache
