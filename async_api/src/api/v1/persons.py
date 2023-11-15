@@ -1,12 +1,11 @@
-from http import HTTPStatus
 from uuid import UUID
 
 from core.config import QueryParams
 from models.film import Film
 from models.person import Person, PersonDetails
 from services.person import PersonService, get_person_service
-
-from fastapi import APIRouter, Depends, HTTPException, Request
+from exceptions import person_not_found, films_not_found, persons_not_found
+from fastapi import APIRouter, Depends, Request
 
 router = APIRouter()
 
@@ -29,8 +28,8 @@ async def search_person(
                                         page_number=commons.page_number,
                                         page_size=commons.page_size)
     if not persons:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Person Not Found")
-    return [PersonDetails(**person) for person in persons]
+        raise persons_not_found
+    return persons
 
 
 @router.get(
@@ -47,8 +46,8 @@ async def get_person_by_id(
 ) -> Person:
     person = await service.get_data_by_id(url=str(request.url), id=str(uuid))
     if not person:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Person Not Found")
-    return PersonDetails(**person)
+        raise person_not_found
+    return person
 
 
 @router.get(
@@ -65,5 +64,5 @@ async def get_films_by_person(
 ) -> list[dict[str, Film]]:
     films = await service.get_film(url=str(request.url), id=str(uuid))
     if not films:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Films Not Found")
+        raise films_not_found
     return films

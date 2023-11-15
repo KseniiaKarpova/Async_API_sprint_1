@@ -1,5 +1,4 @@
 import uuid
-from typing import List, Optional, Union
 from models.base import Base0rjsonModel
 
 
@@ -14,10 +13,10 @@ class Film(BaseModelOrjson):
 
 class FilmDetail(BaseModelOrjson):
     title: str
-    imdb_rating: Union[float, None] = None
+    imdb_rating: float = None
     genre: list
     title: str
-    description: str | None
-    director: list | None
+    description: str = None
+    director: list = None
     actors: list = None
     writers: list = None

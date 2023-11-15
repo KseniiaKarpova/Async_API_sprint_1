@@ -1,5 +1,4 @@
 import uuid
-from typing import List
 from models.base import Base0rjsonModel
 
 
@@ -10,4 +9,4 @@ class Person(Base0rjsonModel):
 
 
 class PersonDetails(Person):
-    films: List
+    films: list

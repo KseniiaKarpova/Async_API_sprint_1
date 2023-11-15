@@ -1,5 +1,4 @@
 from dataclasses import astuple, fields
-from typing import List
 
 from api.sqlite_to_postgres.logger import logger
 from psycopg2.extras import execute_batch
@@ -9,7 +8,7 @@ class SqlExecuter:
     def __init__(self, connect):
         self.connect = connect
 
-    def extract_data(self, table_name: str, datatype, i, n=100) -> List:
+    def extract_data(self, table_name: str, datatype, i, n=100) -> list:
         # получение  всех данных из таблицы
         try:
             # название колонок
@@ -56,7 +55,7 @@ class PostgresSaver(SqlExecuter):
     def get_count_rows(self, table_name: str, colums_name: str) -> int:
         return len(self.extract_data(table_name, colums_name))
 
-    def save(self, table_name: str, data, conflict_name_colums: List[str]):
+    def save(self, table_name: str, data, conflict_name_colums: list[str]):
         try:
             # получение названий колонок
             colums_name = [field.name for field in fields(data[0])]

@@ -1,11 +1,10 @@
-from http import HTTPStatus
-from typing import List
 from uuid import UUID
 
 from models.genre import Genre
 from services.genres import GenreService, get_genre_service
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, Request
+from exceptions import genre_not_found, genres_not_found
 
 router = APIRouter()
 
@@ -19,11 +18,11 @@ router = APIRouter()
 async def get_genres(
     request: Request,
     service: GenreService = Depends(get_genre_service)
-) -> List[Genre]:
+) -> list[Genre]:
     genres = await service.get_data_list(url=str(request.url))
     if not genres:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Genres Not Found")
-    return [Genre(**genre) for genre in genres]
+        raise genres_not_found
+    return genres
 
 
 @router.get(
@@ -40,5 +39,5 @@ async def get_genre_by_id(
 ) -> Genre:
     genre = await service.get_data_by_id(url=str(request.url), id=str(uuid))
     if not genre:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Genre Not Found")
-    return Genre(**genre)
+        raise genre_not_found
+    return genre

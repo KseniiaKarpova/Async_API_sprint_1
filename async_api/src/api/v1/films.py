@@ -1,11 +1,11 @@
-from http import HTTPStatus
 from uuid import UUID
 
 from core.config import QueryParams
 from models.film import Film, FilmDetail
 from services.film import FilmService, get_film_service
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, Request
+from exceptions import film_not_found, films_not_found
 
 router = APIRouter()
 
@@ -27,15 +27,8 @@ async def get_film_list(
 ) -> list[Film]:
     films = await film_service.get_data_list(sort, genre, commons.page_number, commons.page_size)
     if not films:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Films Not Found")
-    return [
-        Film(
-            id=film["id"],
-            title=film["title"],
-            imdb_rating=film["imdb_rating"],
-        )
-        for film in films
-    ]
+        raise films_not_found
+    return films
 
 
 @router.get(
@@ -53,7 +46,7 @@ async def search_films(
 ) -> list[dict[str, Film]]:
     films = await film_service.search_data(query, commons.page_number, commons.page_size)
     if not films:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Films Not Found")
+        films_not_found
     return films
 
 
@@ -70,5 +63,5 @@ async def get_film_details(
 ) -> FilmDetail:
     film = await film_service.get_data_by_id(url=str(request.url), id=str(film_id))
     if not film:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Film Not Found")
+        raise film_not_found
     return film
