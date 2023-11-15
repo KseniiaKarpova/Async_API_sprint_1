@@ -1,5 +1,4 @@
 from functools import lru_cache
-from typing import Dict, List, Optional
 from uuid import UUID
 
 from db.elastic import get_elastic
@@ -31,7 +30,7 @@ class FilmStorage:
             return None
         return [film["_source"] for film in docs["hits"]["hits"]]
 
-    async def get_data_by_id(self, id: UUID) -> Optional[Dict]:
+    async def get_data_by_id(self, id: UUID) -> dict:
         try:
             doc = await self.elastic.get(index="movies", id=id)
         except NotFoundError:
@@ -40,7 +39,7 @@ class FilmStorage:
 
     async def get_data_list(
         self, sort: str, genre: UUID, page_number: int, page_size: int
-    ) -> List[Optional[Dict]] | None:
+    ) -> list[dict] | None:
         if sort[0] == "-":
             sort = {sort[1:]: "desc"}
         else:
@@ -80,7 +79,7 @@ class FilmService:
         data = await self.storage.search_data(query, page_number=page_number, page_size=page_size)
         return data
 
-    async def get_data_by_id(self, url: str, id: UUID) -> Optional[Dict]:
+    async def get_data_by_id(self, url: str, id: UUID) -> dict:
         data = await self.cache.get_from_cache(url)
         if not data:
             data = await self.storage.get_data_by_id(id=id)
@@ -90,7 +89,7 @@ class FilmService:
 
     async def get_data_list(
         self, sort: str, genre: UUID, page_number: int, page_size: int
-    ) -> Optional[List[Dict]]:
+    ) -> list[dict]:
         data = await self.storage.get_data_list(
             sort=sort, genre=genre, page_number=page_number, page_size=page_size
         )
