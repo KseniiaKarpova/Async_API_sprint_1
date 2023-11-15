@@ -4,6 +4,7 @@ from logging import config as logging_config
 from core.logger import LOGGING
 
 from fastapi import Query
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Применяем настройки логирования
 logging_config.dictConfig(LOGGING)
@@ -31,3 +32,12 @@ class QueryParams:
     ):
         self.page_number = page_number
         self.page_size = page_size
+
+
+class Settings(BaseSettings):
+    project_name: str = 'Async API'
+    redis_host: str
+    redis_port: int
+    elastic_host: str 
+    elastic_port: int
+    model_config = SettingsConfigDict(env_file=".env")
