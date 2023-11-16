@@ -46,7 +46,7 @@ async def search_films(
 ) -> list[dict[str, Film]]:
     films = await film_service.search_data(query, commons.page_number, commons.page_size)
     if not films:
-        films_not_found
+        raise films_not_found
     return films
 
 
