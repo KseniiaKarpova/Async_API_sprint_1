@@ -1,3 +1,4 @@
+GIT: [https://github.com/KseniiaKarpova/Async_API_sprint_1](https://github.com/KseniiaKarpova/Async_API_sprint_1)
 # Запуск проекта
 ### 1 step
 
