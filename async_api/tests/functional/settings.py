@@ -111,11 +111,11 @@ movies_mappings = {
 
 
 class TestSettings(BaseSettings):
-    es_host: str = Field('elasticsearch', env='ES_HOST')
+    es_host: str = Field('test_elasticsearch', env='ES_HOST')
     es_index: str = Field('movies', env='ES_INDEX')
     es_port: str = Field('9200', env='ES_PORT')
     redis_host: str = Field('cache', env='REDIS_HOST')
-    service_url: str = Field('http://app:8000', env='SERVICE_URL')
+    service_url: str = Field('http://test_async_api:7000', env='SERVICE_URL')
 
 
 test_settings = TestSettings()

@@ -32,7 +32,7 @@ async def test_search():
         'writers': [
             {'id': 'caf76c67-c0fe-477e-8766-3ab3ff2574b5', 'name': 'Ben'},
             {'id': 'b45bd7bc-2e16-46d5-b125-983d356768c6', 'name': 'Howard'}
-        ],
+        ]
     } for _ in range(60)]
 
     bulk_query: list[dict] = []
@@ -42,7 +42,8 @@ async def test_search():
         bulk_query.append(data)
 
     # 2. Загружаем данные в ES
-    es_client = AsyncElasticsearch(hosts=f"http://{test_settings.es_host}:{test_settings.es_port}", verify_certs=False)
+    es_url = f"http://{test_settings.es_host}:{test_settings.es_port}"
+    es_client = AsyncElasticsearch(hosts=es_url, verify_certs=False)
     if await es_client.indices.exists(index=test_settings.es_index):
         await es_client.indices.delete(index=test_settings.es_index)
     await es_client.indices.create(index=test_settings.es_index, **movies_mappings)

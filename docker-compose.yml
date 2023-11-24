@@ -111,8 +111,14 @@ services:
     container_name: fastapi
     image: fastapi-image
     command: gunicorn main:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:7000
+    env_file:
+      - .env
     environment:
       PYTHONPATH: /app/src
+      ES_HOST: ${ES_HOST}
+      ES_PORT: ${ES_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
     build:
       context: async_api
       dockerfile: Dockerfile
@@ -123,29 +129,6 @@ services:
     depends_on:
       - etl
       - cache
-  
-  tests:
-    image: fastapi-image
-    depends_on:
-      - elasticsearch
-      - cache
-    env_file:
-      - .env
-    environment:
-      PYTHONPATH: /
-      ES_HOST: ${ES_HOST}
-      ES_INDEX: ${ES_INDEX}
-      ES_ID_FIELD: ${ES_ID_FIELD}
-      ES_PORT: ${ES_PORT}
-      SERVICE_URL: ${SERVICE_URL}
-      REDIS_HOST: ${REDIS_HOST}
-    volumes:
-      - ./async_api/tests:/tests/
-    entrypoint: >
-      sh -c " pip install -r /tests/functional/requirements.txt
-      && python3 /tests/functional/utils/wait_for_es.py
-      && python3 /tests/functional/utils/wait_for_redis.py
-      && pytest /tests/functional/src"
 
 
 volumes:

@@ -4,7 +4,8 @@ from logging import config as logging_config
 from core.logger import LOGGING
 
 from fastapi import Query
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
+from pydantic import Field
 
 # Применяем настройки логирования
 logging_config.dictConfig(LOGGING)
@@ -35,9 +36,8 @@ class QueryParams:
 
 
 class Settings(BaseSettings):
-    project_name: str = 'Async API'
-    redis_host: str
-    redis_port: int
-    elastic_host: str 
-    elastic_port: int
-    model_config = SettingsConfigDict(env_file=".env")
+    project_name: str = Field('Async API', env='PROJECT_NAME')
+    redis_port: int = Field('http://app:8000', env='REDIS_PORT')
+    elastic_host: str = Field('elasticsearch', env='ES_HOST')
+    elastic_port: str = Field('9200', env='ES_PORT')
+    redis_host: str = Field('cache', env='REDIS_HOST')
