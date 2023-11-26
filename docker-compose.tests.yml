@@ -1,0 +1,74 @@
+version: '3.9'
+
+services:
+  test_elasticsearch:
+    image: elasticsearch:8.6.2
+    container_name: test_elasticsearch
+    ports:
+      - "9200:9200"
+    environment:
+      - "discovery.type=single-node"
+      - "xpack.security.enabled=false"
+    volumes:
+      - test_es_data:/usr/share/elasticsearch/data
+
+  test_cache:
+    image: redis:7.2.3-alpine3.18
+    container_name: test_cache
+    volumes:
+      - test_cache:/data
+
+  test_async_api:
+    container_name: test_fastapi
+    build:
+      context: async_api
+      dockerfile: Dockerfile
+    image: test-fastapi-image
+    command: gunicorn main:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:7000
+    ports:
+      - 9999:7000
+    env_file:
+      - .env
+    environment:
+      PYTHONPATH: /app/src
+      PROJECT_NAME: app
+      ES_HOST: ${TEST_ES_HOST}
+      ES_PORT: ${TEST_ES_PORT}
+      REDIS_HOST: ${TEST_REDIS_HOST}
+      REDIS_PORT: ${TEST_REDIS_PORT}
+      
+    depends_on:
+      - test_cache
+      - test_elasticsearch
+    volumes:
+      - ./async_api/src:/app
+
+  tests:
+    build:
+      context: tests
+      dockerfile: dockerfile
+    image: async_tests
+    env_file:
+      - .env
+    environment:
+      PYTHONPATH: .
+      ES_HOST: ${TEST_ES_HOST}
+      ES_INDEX: ${TEST_ES_INDEX}
+      ES_ID_FIELD: ${TEST_ES_ID_FIELD}
+      ES_PORT: ${TEST_ES_PORT}
+      SERVICE_URL: ${TEST_SERVICE_URL}
+      REDIS_HOST: ${TEST_REDIS_HOST}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://test_async_api:7000"]  # Replace with your actual health check command
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    entrypoint: >
+      sh -c "
+      python3 functional/utils/wait_for_es.py
+      && python3 functional/utils/wait_for_redis.py
+      && pytest functional/src"
+
+volumes:
+  test_es_data:
+  test_cache:

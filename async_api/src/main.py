@@ -9,20 +9,15 @@ from elasticsearch import AsyncElasticsearch
 from fastapi.responses import ORJSONResponse
 from redis.asyncio import Redis
 from contextlib import asynccontextmanager
-from functools import lru_cache
+#from functools import lru_cache
 from fastapi import FastAPI
 
-
-@lru_cache
-def get_settings():
-    return config.Settings()
-
-settings = get_settings()
+settings = config.Settings()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     redis.redis = Redis(host=settings.redis_host, port=settings.redis_port)
-    elastic.es = AsyncElasticsearch(hosts=[f'http://{settings.elastic_host}:{settings.elastic_port}'])
+    elastic.es = AsyncElasticsearch(hosts=[f'http://{settings.es_host}:{settings.es_port}'])
     yield
     await redis.redis.close()
     await elastic.es.close()
